@@ -1,0 +1,31 @@
+#container {
+  width: 200px;
+  margin: auto;
+  border: 3px solid #337ab7;
+  border-radius: 5px;
+  padding: 1px 2px;
+}
+  #result {
+    margin-right: 7px;
+    margin-left: 4px;
+    border: 3px solid #337ab7;
+    border-radius: 5px;
+    padding: 1px 2px;
+  }
+  #aggregation {
+    display: inline-block;
+    margin-bottom: 3px;
+    padding-left: 5px;
+  }
+    #aggregation button {
+     margin-right: 2px;
+    }
+    #aggregation button:nth-child(2) {
+      margin-left: 15px;
+    }
+  #numbers {
+    padding-left: 5px;
+  }
+    #numbers button {
+      margin: 0 2px 1px 0;
+    }

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Calculator in React</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+</head>
+<body>
+  <script type="text/jsx">
+    var Calculator = React.createClass({
+      /*
+      generateNums: function() {
+        var buttons = [];
+        for(var i = 0 ; i < 10 ; i++) {
+          var createButton = '<button "onClick = { this.setTempNumState }">' + i + '</button><br/>';
+          buttons.push(createButton);
+        }
+        return {__html: buttons.join('')};
+        // __html param --> display html (security)
+        //<div id="numbers" dangerouslySetInnerHTML = { this.generateNums() } />
+      },
+      */
+      getInitialState: function() {
+        return {
+          result: 0,
+          tempNumState: 0,
+          resAggreString: null,
+          aggreagationType: null,
+          afterAggregation: false
+        };
+      },
+      reset: function() {
+        this.setState({ result: 0, tempNumState: 0, afterAggregation: false });
+      },
+      add: function(event) {
+        var addStringRes = this.state.result + ' +';
+        this.setState({ resAggreString: addStringRes, aggreagationType: 'add', afterAggregation: true });
+      },
+      extract: function() {
+        var addStringRes = this.state.result + ' -';
+        this.setState({ resAggreString: addStringRes, aggreagationType: 'extract', afterAggregation: true });
+      },
+      equal: function() {
+        var res = this.state.result;
+        if(this.state.aggreagationType === 'add') {
+          res = parseInt(this.state.result) + parseInt(this.state.tempNumState);
+        }
+        else if(this.state.aggreagationType === 'extract') {
+          res = parseInt(this.state.result) - parseInt(this.state.tempNumState);
+        }
+        this.setState({ result: res, resAggreString: null, aggreagationType: null, afterAggregation: false });
+      },
+      setTempNumState: function(event) {
+        var numerValue = event.currentTarget.innerHTML;
+        if(this.state.afterAggregation === true) {
+          var addStringRes = this.state.resAggreString;
+          addStringRes = this.stringReplaceHelper(addStringRes, numerValue);
+          this.setState({ tempNumState: numerValue, resAggreString: addStringRes });
+        }
+        else {
+          this.setState({ result: numerValue });
+        }
+      },
+      stringReplaceHelper(replaceableStr, val) {
+        var retVal = '';
+        var index = -1;
+        if(replaceableStr.indexOf('+') > -1) {
+          index = replaceableStr.indexOf('+');
+          retVal = replaceableStr.substring(0, parseInt(index));
+          retVal += '+ ' + val;
+        }
+        else if(replaceableStr.indexOf(' -') > -1) {
+          index = replaceableStr.indexOf(' -');
+          retVal = replaceableStr.substring(0, parseInt(index));
+          retVal += ' - ' + val;
+        }
+        console.log('retVal ' + retVal);
+        return retVal;
+      },
+      resToShow: function() {
+        if(this.state.resAggreString === null)
+          return this.state.result;
+        else
+          return this.state.resAggreString;
+      },
+      render: function() {
+        return(
+          <div id="container">
+            <p id="result">{ this.resToShow() }</p>
+            <div id="aggregation">
+              <button className="btn btn-danger" onClick = { this.reset }>clear</button>
+              <button className="btn btn-success" onClick = { this.add }>+</button>
+              <button className="btn btn-success" onClick = { this.extract }>-</button>
+              <button className="btn btn-success" onClick = { this.equal }>=</button>
+            </div>
+            <div id="numbers">
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>0</button>
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>1</button>
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>2</button>
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>3</button>
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>4</button>
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>5</button>
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>6</button>
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>7</button>
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>8</button>
+              <button className="btn btn-primary" onClick = { this.setTempNumState }>9</button>
+            </div>
+          </div>
+        );
+      }
+    });
+    React.render(<Calculator />,
+    document.body
+    );
+  </script>
+</body>
+</html>
